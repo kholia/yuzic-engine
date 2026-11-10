@@ -1,9 +1,15 @@
 # Android ALAC decoding
 
 Media3 extracts ALAC packets from MP4/M4A, but Android does not require an ALAC
-MediaCodec decoder. `AlacAudioRenderer` adds a native software fallback after the
-platform renderer. Both voices use their existing audio sink, so EQ, replay
+MediaCodec decoder. `AlacAudioRenderer` is registered before the platform audio
+renderer and handles ALAC only. A device advertising ALAC support can still
+fail inside `MediaCodecAudioRenderer`; a renderer registered as a fallback
+never gets selected in that case. Both voices use their existing sink, so EQ, replay
 gain, crossfade, HTTP authentication, ranged requests and caching still apply.
+
+Successful initialization logs `YuzicAlac: Using native FFmpeg ALAC decoder`
+with sample rate and channel count. A native library load failure is logged
+to stderr/logcat instead of silently dropping the software decoder.
 
 `src/main/cpp` builds FFmpeg **9.0.2**, enabling only the ALAC decoder, libavcodec
 and libavutil. No FFmpeg network transport, demuxer, encoder, CLI, GPL or nonfree

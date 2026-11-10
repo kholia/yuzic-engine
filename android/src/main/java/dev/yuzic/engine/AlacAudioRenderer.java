@@ -1,6 +1,7 @@
 package dev.yuzic.engine;
 
 import android.os.Handler;
+import android.util.Log;
 import androidx.media3.common.C;
 import androidx.media3.common.Format;
 import androidx.media3.common.MimeTypes;
@@ -15,7 +16,7 @@ import androidx.media3.exoplayer.audio.AudioSink;
 import androidx.media3.exoplayer.audio.DecoderAudioRenderer;
 import java.nio.ByteBuffer;
 
-/** Software fallback for ALAC in MP4, sharing each voice's ordinary PCM sink and processors. */
+/** Preferred ALAC decoder for MP4, sharing each voice's ordinary PCM sink and processors. */
 @UnstableApi
 public final class AlacAudioRenderer extends DecoderAudioRenderer<AlacAudioRenderer.Decoder> {
   public AlacAudioRenderer(Handler handler, AudioRendererEventListener listener, AudioSink sink) {
@@ -38,7 +39,10 @@ public final class AlacAudioRenderer extends DecoderAudioRenderer<AlacAudioRende
 
   @Override protected Decoder createDecoder(Format format, CryptoConfig cryptoConfig) throws Failure {
     try {
-      return new Decoder(new NativeAlacDecoder(config(format)), format.maxInputSize);
+      Decoder decoder = new Decoder(new NativeAlacDecoder(config(format)), format.maxInputSize);
+      Log.i("YuzicAlac", "Using native FFmpeg ALAC decoder: "
+          + decoder.packets.config.sampleRate + " Hz, " + decoder.packets.config.channels + " channels");
+      return decoder;
     } catch (IllegalArgumentException error) {
       throw new Failure(error);
     }

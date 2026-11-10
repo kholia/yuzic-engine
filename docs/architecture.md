@@ -406,7 +406,8 @@ signature check does not match, so it reaches Core Audio exactly as before.
 ### Android ALAC requires a decoder as well as an extractor
 
 Media3 extracts ALAC from MP4, but Android does not require an ALAC MediaCodec
-decoder. `AlacAudioRenderer` is a fallback after the platform renderer, using
+decoder. Other devices advertise ALAC support but fail at playback, so
+`AlacAudioRenderer` is preferred before the platform renderer, using
 FFmpeg 9.0.2's native decoder and the same per-voice `AudioSink` as every other
 format. This keeps authentication, range caching, equalizer, replay gain and
 crossfade in the existing path. FFmpeg is built from pinned, checksummed source

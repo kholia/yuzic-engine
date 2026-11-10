@@ -9,7 +9,11 @@ final class NativeAlacDecoder implements AutoCloseable {
   static {
     boolean loaded;
     try { System.loadLibrary("yuzic_alac"); loaded = true; }
-    catch (UnsatisfiedLinkError error) { loaded = false; }
+    catch (UnsatisfiedLinkError error) {
+      loaded = false;
+      // System.err also reaches logcat, and remains usable in plain JVM tests.
+      System.err.println("YuzicAlac: native library could not be loaded: " + error);
+    }
     AVAILABLE = loaded;
   }
 

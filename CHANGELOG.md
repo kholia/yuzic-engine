@@ -13,8 +13,9 @@ behaviour does not.
 
 ### Fixed
 
-- Android: ALAC in MP4/M4A now has a native FFmpeg 9.0.2 decoder fallback when
-  no platform decoder is available, including files Gonic labels
+- Android: ALAC in MP4/M4A now uses the native FFmpeg 9.0.2 decoder ahead of
+  platform decoders, including devices that advertise ALAC support but fail
+  in `MediaCodecAudioRenderer`, and files Gonic labels
   `audio/mp4a-latm`. The decoder shares each voice's cache and PCM16 DSP path.
 
 ## [1.2.5]

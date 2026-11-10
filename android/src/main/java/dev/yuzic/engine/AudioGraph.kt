@@ -111,11 +111,12 @@ class AudioGraph(private val context: Context, private val httpCallFactory: Call
         eventListener: AudioRendererEventListener,
         out: ArrayList<Renderer>,
       ) {
+        // Some devices advertise ALAC support and then fail in MediaCodec.
+        // Prefer our decoder for ALAC; it declines every other audio format.
+        // Both renderers share this voice's sink, including its EQ and fade.
+        out.add(AlacAudioRenderer(eventHandler, eventListener, audioSink))
         super.buildAudioRenderers(context, extensionRendererMode, mediaCodecSelector,
           enableDecoderFallback, audioSink, eventHandler, eventListener, out)
-        // Retain platform decoders first. ALAC is not a required Android codec;
-        // this fallback uses the same sink, including this voice's EQ and fade.
-        out.add(AlacAudioRenderer(eventHandler, eventListener, audioSink))
       }
 
       override fun buildAudioSink(

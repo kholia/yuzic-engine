@@ -81,7 +81,7 @@ also supplies decoders for these platform gaps:
 | --- | --- | --- |
 | Ogg Vorbis | libvorbis, vendored | Media3 |
 | Ogg Opus | libopus, vendored | Media3 |
-| ALAC in MP4/M4A | Core Audio | FFmpeg 9.0.2, native software fallback |
+| ALAC in MP4/M4A | Core Audio | FFmpeg 9.0.2, preferred native decoder |
 
 Android ALAC uses the existing cache and DSP path. Its output is PCM16,
 including for 20/24/32-bit sources. See [Android decoding and build notes](android/README.md).
