@@ -9,6 +9,14 @@ Semver here is a promise about the **JavaScript API** — the methods on
 implementation detail may change in a patch release when the observable
 behaviour does not.
 
+## [Unreleased]
+
+### Fixed
+
+- Android: ALAC in MP4/M4A now has a native FFmpeg 9.0.2 decoder fallback when
+  no platform decoder is available, including files Gonic labels
+  `audio/mp4a-latm`. The decoder shares each voice's cache and PCM16 DSP path.
+
 ## [1.2.5]
 
 ### Fixed
